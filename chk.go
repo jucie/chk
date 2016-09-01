@@ -1,3 +1,5 @@
+// Contains some functions to verify the integrity of document ids.
+
 package chk
 
 import (
@@ -30,6 +32,8 @@ func digitIsOk(s string, multiVector []int) bool {
 
 var multCnpj = [...]int{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
 
+// returns true if the CNPJ is well formed and false otherwise
+// (CNPJ is brazilian company id).
 func CnpjIsValid(cnpj string) bool {
 	if len(cnpj) != 14 {
 		return false
@@ -39,6 +43,8 @@ func CnpjIsValid(cnpj string) bool {
 
 var multCpf = [...]int{11, 10, 9, 8, 7, 6, 5, 4, 3, 2}
 
+// returns true if the CPF is well formed and false otherwise
+// (CPF is brazilian citizen id).
 func CpfIsValid(cpf string) bool {
 	if len(cpf) != 11 {
 		return false
