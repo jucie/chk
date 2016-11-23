@@ -51,3 +51,24 @@ func CpfIsValid(cpf string) bool {
 	}
 	return digitIsOk(cpf, multCpf[1:]) && digitIsOk(cpf, multCpf[:])
 }
+
+// Ean13IsValid returns true if the EAN-13 code is well formed and false otherwise.
+// EAN-13 stands for European Article Number 13 digits.
+// See http://pt.wikipedia.org/wiki/EAN-13
+func Ean13IsValid(ean string) bool {
+	if len(ean) != 13 {
+		return false
+	}
+	b := []byte(ean)
+	sum := make([]int, 2)
+	for i := 0; i < 12; i++ {
+		c := int(b[i])
+		if !unicode.IsDigit(rune(c)) {
+			return false
+		}
+		sum[i&1] += c - int('0')
+	}
+	total := sum[0] + sum[1]*3
+	digit := 10 - (total % 10)
+	return ean[12] == byte(digit+int('0'))
+}

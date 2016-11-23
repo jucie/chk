@@ -27,3 +27,15 @@ func TestCpfIsValid(t *testing.T) {
 		t.Errorf("07203833400 is not a valid CPF but CpfIsValid returned true")
 	}
 }
+
+func TestEan13IsValid(t *testing.T) {
+	if !Ean13IsValid("7899999912349") {
+		t.Errorf("7899999912349 is a valid EAN-13 but Ean13IsValid returned false")
+	}
+	if !Ean13IsValid("7891627314051") {
+		t.Errorf("7891627314051 is a valid EAN-13 but Ean13IsValid returned false")
+	}
+	if Ean13IsValid("4388132217238") {
+		t.Errorf("4388132217238 is not a valid EAN-13 but Ean13IsValid returned true")
+	}
+}
