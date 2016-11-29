@@ -5,12 +5,31 @@ import (
 )
 
 func TestCnpjIsValid(t *testing.T) {
-	if !CnpjIsValid("52803004000101") {
-		t.Errorf("52803004000101 is a valid CNPJ but CnpjIsValid returned false")
+	valid := []string{
+		"01569444000105",
+		"04776111000145",
+		"04949587000130",
+		"07319327000170",
+		"07846559000186",
+		"10381592000192",
+		"14661167000108",
+		"21100656000156",
+		"22702850000174",
+		"51015212000183",
+		"60570793000106",
+		"65370025000122",
+		"67756288000108",
+		"86526696000100",
+		"52803004000101",
+		"47508411105179",
 	}
-	if !CnpjIsValid("47508411105179") {
-		t.Errorf("47508411105179 is a valid CNPJ but CnpjIsValid returned false")
+
+	for _, s := range valid {
+		if !CnpjIsValid(s) {
+			t.Errorf(s + " is a valid CNPJ but CnpjIsValid returned false")
+		}
 	}
+
 	if CnpjIsValid("123435678901234") {
 		t.Errorf("123435678901234 is not a valid CNPJ but CnpjIsValid returned true")
 	}
