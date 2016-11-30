@@ -69,6 +69,6 @@ func Ean13IsValid(ean string) bool {
 		sum[i&1] += c - int('0')
 	}
 	total := sum[0] + sum[1]*3
-	digit := 10 - (total % 10)
+	digit := (10 - (total % 10)) % 10
 	return ean[12] == byte(digit+int('0'))
 }

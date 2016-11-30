@@ -51,6 +51,9 @@ func TestEan13IsValid(t *testing.T) {
 	if !Ean13IsValid("7899999912349") {
 		t.Errorf("7899999912349 is a valid EAN-13 but Ean13IsValid returned false")
 	}
+	if !Ean13IsValid("7891260060520") {
+		t.Errorf("7891260060520 is a valid EAN-13 but Ean13IsValid returned false")
+	}
 	if !Ean13IsValid("7891627314051") {
 		t.Errorf("7891627314051 is a valid EAN-13 but Ean13IsValid returned false")
 	}
