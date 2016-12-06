@@ -72,3 +72,26 @@ func Ean13IsValid(ean string) bool {
 	digit := (10 - (total % 10)) % 10
 	return ean[12] == byte(digit+int('0'))
 }
+
+// DanfeIsValid returns true if the DANFE key is well formed and false otherwise.
+// DANFE stands for Documento Auxiliar da Nota Fiscal Eletrônica.
+// See Manual de Orientação do Contribuinte at http://www.nfe.fazenda.gov.br
+func DanfeIsValid(key string) bool {
+	if len(key) != 44 {
+		return false
+	}
+	sum := 0
+	for i, r := range key {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+		sum += (int(r) - int('0')) * danfeWeight[i]
+	}
+	digit := 11 - (sum % 11)
+	if digit < 2 {
+		digit = 0
+	}
+	return key[43] == byte(digit+int('0'))
+}
+
+var danfeWeight = []int{4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 0}
