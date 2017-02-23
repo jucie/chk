@@ -62,6 +62,13 @@ func TestEan13IsValid(t *testing.T) {
 	}
 }
 
+func TestDun14IsValid(t *testing.T) {
+	if !Dun14IsValid("10070330425542") {
+		t.Errorf("10070330425542 is a valid EAN-13 but Ean13IsValid returned false")
+	}
+
+}
+
 func TestDanfeIsValid(t *testing.T) {
 	if !DanfeIsValid("42100484684182000157550010000000020108042108") {
 		t.Errorf("42100484684182000157550010000000020108042108 is a valid DANFE key but DanfeIsValid returned false")

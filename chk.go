@@ -5,6 +5,8 @@ package chk
 import (
 	"unicode"
 )
+const EAN13_LENGTH int = 13
+const DUN14_LENGTH int = 14
 
 func digit(s string, multiVector []int) (byte, bool) {
 	sum := 0
@@ -52,25 +54,38 @@ func CpfIsValid(cpf string) bool {
 	return digitIsOk(cpf, multCpf[1:]) && digitIsOk(cpf, multCpf[:])
 }
 
-// Ean13IsValid returns true if the EAN-13 code is well formed and false otherwise.
-// EAN-13 stands for European Article Number 13 digits.
-// See http://pt.wikipedia.org/wiki/EAN-13
-func Ean13IsValid(ean string) bool {
-	if len(ean) != 13 {
+func BarcodeIsValid(barcode string, expectedLength int) bool {
+	if len(barcode) != expectedLength {
 		return false
 	}
-	b := []byte(ean)
+	b := []byte(barcode)
 	sum := make([]int, 2)
-	for i := 0; i < 12; i++ {
+	for i := 0; i < expectedLength - 1; i++ {
 		c := int(b[i])
 		if !unicode.IsDigit(rune(c)) {
 			return false
 		}
-		sum[i&1] += c - int('0')
+		sum[i & 1] += c - int('0')
 	}
-	total := sum[0] + sum[1]*3
+
+	total := sum[0] + sum[1] * 3
 	digit := (10 - (total % 10)) % 10
-	return ean[12] == byte(digit+int('0'))
+	return barcode[expectedLength - 1] == byte(digit + int('0'))
+}
+
+// Dun14IsValid returns true if the DUN-14 code is well formed and false otherwise.
+// DUN-14 stands for Distribution Unit Number 14 digits.
+// See https://pt.wikipedia.org/wiki/DUN-14
+func Dun14IsValid(dun string) bool {
+	return BarcodeIsValid(dun, DUN14_LENGTH)
+}
+
+
+// Ean13IsValid returns true if the EAN-13 code is well formed and false otherwise.
+// EAN-13 stands for European Article Number 13 digits.
+// See http://pt.wikipedia.org/wiki/EAN-13
+func Ean13IsValid(ean string) bool {
+	return BarcodeIsValid(ean, EAN13_LENGTH)
 }
 
 // DanfeIsValid returns true if the DANFE key is well formed and false otherwise.
