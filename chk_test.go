@@ -64,7 +64,14 @@ func TestEan13IsValid(t *testing.T) {
 
 func TestDun14IsValid(t *testing.T) {
 	if !Dun14IsValid("10070330425542") {
-		t.Errorf("10070330425542 is a valid EAN-13 but Ean13IsValid returned false")
+		t.Errorf("10070330425542 is a valid DUN-14 but Dun14IsValid returned false")
+	}
+	if !Dun14IsValid("17896309204047") {
+		t.Errorf("17896309204047 is a valid DUN-14 but Dun14IsValid returned false")
+	}
+
+	if !Dun14IsValid("27891253104877") {
+		t.Errorf("27891253104877 is a valid DUN-14 but Dun14IsValid returned false")
 	}
 
 }

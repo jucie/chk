@@ -5,8 +5,6 @@ package chk
 import (
 	"unicode"
 )
-const EAN13_LENGTH int = 13
-const DUN14_LENGTH int = 14
 
 func digit(s string, multiVector []int) (byte, bool) {
 	sum := 0
@@ -77,7 +75,22 @@ func BarcodeIsValid(barcode string, expectedLength int) bool {
 // DUN-14 stands for Distribution Unit Number 14 digits.
 // See https://pt.wikipedia.org/wiki/DUN-14
 func Dun14IsValid(dun string) bool {
-	return BarcodeIsValid(dun, DUN14_LENGTH)
+	if len(dun) != 14 {
+		return false
+	}
+	b := []byte(dun)
+	sum := make([]int, 2)
+	for i := 0; i < 13; i++ {
+		c := int(b[i])
+		if !unicode.IsDigit(rune(c)) {
+			return false
+		}
+		sum[i & 1] += c - int('0')
+	}
+
+	total := sum[0] * 3 + sum[1]
+	digit := (10 - (total % 10)) % 10
+	return dun[13] == byte(digit + int('0'))
 }
 
 
@@ -85,7 +98,22 @@ func Dun14IsValid(dun string) bool {
 // EAN-13 stands for European Article Number 13 digits.
 // See http://pt.wikipedia.org/wiki/EAN-13
 func Ean13IsValid(ean string) bool {
-	return BarcodeIsValid(ean, EAN13_LENGTH)
+	if len(ean) != 13 {
+		return false
+	}
+	b := []byte(ean)
+	sum := make([]int, 2)
+	for i := 0; i < 12; i++ {
+		c := int(b[i])
+		if !unicode.IsDigit(rune(c)) {
+			return false
+		}
+		sum[i & 1] += c - int('0')
+	}
+
+	total := sum[0] + sum[1] * 3
+	digit := (10 - (total % 10)) % 10
+	return ean[12] == byte(digit + int('0'))
 }
 
 // DanfeIsValid returns true if the DANFE key is well formed and false otherwise.
