@@ -6,6 +6,8 @@ import (
 	"unicode"
 )
 
+// digit calculates the verification digit using the multiplication vector
+// returns the digit and a bool. If the bool is false input is invalid.
 func digit(s string, multiVector []int) (byte, bool) {
 	sum := 0
 	for i, mult := range multiVector {
@@ -50,25 +52,6 @@ func CpfIsValid(cpf string) bool {
 		return false
 	}
 	return digitIsOk(cpf, multCpf[1:]) && digitIsOk(cpf, multCpf[:])
-}
-
-func BarcodeIsValid(barcode string, expectedLength int) bool {
-	if len(barcode) != expectedLength {
-		return false
-	}
-	b := []byte(barcode)
-	sum := make([]int, 2)
-	for i := 0; i < expectedLength - 1; i++ {
-		c := int(b[i])
-		if !unicode.IsDigit(rune(c)) {
-			return false
-		}
-		sum[i & 1] += c - int('0')
-	}
-
-	total := sum[0] + sum[1] * 3
-	digit := (10 - (total % 10)) % 10
-	return barcode[expectedLength - 1] == byte(digit + int('0'))
 }
 
 // Dun14IsValid returns true if the DUN-14 code is well formed and false otherwise.
